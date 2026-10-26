@@ -2,6 +2,13 @@ CP5
 Projeto: PetAdoption API
 
 Repositório: https://github.com/Tidlle/CP5-dotnet
+<<<<<<< HEAD
 
 Integrantes:
 - Eduardo Martins RM 562259
+=======
+Vídeo de demonstração: <INSERIR LINK DO VÍDEO>
+
+Integrantes:
+- Eduardo Martins RM 562259
+>>>>>>> 3f50fe33e75cbb1e4f7f2090194ae0c7d21aa22a
