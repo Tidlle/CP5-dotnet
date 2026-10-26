@@ -1,10 +1,8 @@
-CP5 - Advanced Business Development with .NET - 2026
+CP5
 Projeto: PetAdoption API
 
-Repositório: <INSERIR LINK DO REPOSITÓRIO PÚBLICO>
-Vídeo de demonstração (máx. 5 min): <INSERIR LINK DO VÍDEO>
+Repositório: https://github.com/Tidlle/CP5-dotnet
+Vídeo de demonstração: <INSERIR LINK DO VÍDEO>
 
 Integrantes:
-- NOME COMPLETO 1 - RM00000
-- NOME COMPLETO 2 - RM00000
-- NOME COMPLETO 3 - RM00000
+- Eduardo Martins RM 562259
