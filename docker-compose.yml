@@ -1,0 +1,16 @@
+# SQL Server opcional para quem não tem LocalDB (Linux/macOS ou Windows sem Visual Studio).
+# Depois de subir, defina ConnectionStrings__DefaultConnection conforme o README.
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: petadoption-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "PetAdoption@2026"
+    ports:
+      - "1433:1433"
+    volumes:
+      - petadoption-data:/var/opt/mssql
+
+volumes:
+  petadoption-data:

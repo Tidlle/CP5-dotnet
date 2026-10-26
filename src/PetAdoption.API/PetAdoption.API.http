@@ -1,0 +1,96 @@
+@baseUrl = http://localhost:5080
+# Cole aqui os tokens retornados pelo login/cadastro
+@adminToken = COLE_O_TOKEN_DO_ADMIN
+@userToken = COLE_O_TOKEN_DO_USUARIO
+@abrigoId = 00000000-0000-0000-0000-000000000000
+@petId = 00000000-0000-0000-0000-000000000000
+
+### Ponto de entrada (HATEOAS)
+GET {{baseUrl}}/api
+
+### Login Admin
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{ "email": "admin@petadoption.com", "senha": "Admin@123" }
+
+### Cadastro de usuário comum (perfil User)
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{ "nome": "Usuário Demo", "email": "demo@email.com", "senha": "Senha@123" }
+
+### Sem token -> 401
+GET {{baseUrl}}/api/pets
+
+### Pets paginados (PageResult + HATEOAS)
+GET {{baseUrl}}/api/pets?page=1&pageSize=3
+Authorization: Bearer {{adminToken}}
+
+### Pets filtrados
+GET {{baseUrl}}/api/pets?especie=Gato&status=Disponivel
+Authorization: Bearer {{userToken}}
+
+### Serviço externo: ViaCEP
+GET {{baseUrl}}/api/cep/01310-100
+Authorization: Bearer {{adminToken}}
+
+### CEP inexistente -> 404 (Cep.NaoEncontrado)
+GET {{baseUrl}}/api/cep/99999999
+Authorization: Bearer {{adminToken}}
+
+### Criar abrigo (endereço preenchido pelo ViaCEP)
+POST {{baseUrl}}/api/abrigos
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{ "nome": "Abrigo Demo", "telefone": "11912345678", "cep": "01310-100", "numero": "1000" }
+
+### Abrigo duplicado -> 409 (exceção lançada no Repository)
+POST {{baseUrl}}/api/abrigos
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{ "nome": "Abrigo Demo", "telefone": "11912345678", "cep": "01310-100" }
+
+### Usuário comum criando abrigo -> 403
+POST {{baseUrl}}/api/abrigos
+Authorization: Bearer {{userToken}}
+Content-Type: application/json
+
+{ "nome": "Abrigo Proibido", "telefone": "11912345678", "cep": "01310-100" }
+
+### Abrigos paginados
+GET {{baseUrl}}/api/abrigos?page=1&pageSize=1
+Authorization: Bearer {{adminToken}}
+
+### Pets do abrigo
+GET {{baseUrl}}/api/abrigos/{{abrigoId}}/pets
+Authorization: Bearer {{adminToken}}
+
+### Criar pet
+POST {{baseUrl}}/api/pets
+Authorization: Bearer {{adminToken}}
+Content-Type: application/json
+
+{ "nome": "Caramelo", "especie": "Cachorro", "raca": "Vira-lata", "idadeMeses": 18, "abrigoId": "{{abrigoId}}" }
+
+### Adotar pet (usuário comum)
+POST {{baseUrl}}/api/pets/{{petId}}/adocao
+Authorization: Bearer {{userToken}}
+
+### Adotar novamente -> 422 (Pet.JaAdotado)
+POST {{baseUrl}}/api/pets/{{petId}}/adocao
+Authorization: Bearer {{userToken}}
+
+### Pet inexistente -> 404 (erro RETORNADO pelo Repository / origin OperationResult)
+GET {{baseUrl}}/api/pets/00000000-0000-0000-0000-000000000001
+Authorization: Bearer {{adminToken}}
+
+### Remover pet inexistente -> 404 (erro LANÇADO pelo Repository / origin Exception)
+DELETE {{baseUrl}}/api/pets/00000000-0000-0000-0000-000000000001
+Authorization: Bearer {{adminToken}}
+
+### Remover abrigo com pets -> 409
+DELETE {{baseUrl}}/api/abrigos/{{abrigoId}}
+Authorization: Bearer {{adminToken}}
