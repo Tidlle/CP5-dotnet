@@ -5,3 +5,6 @@ Repositório: https://github.com/Tidlle/CP5-dotnet
 
 Integrantes:
 - Eduardo Martins RM 562259
+- Vitor Madrigrano RM 564191
+- Thiago Sposito RM 561694
+
